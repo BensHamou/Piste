@@ -1,0 +1,112 @@
+{% extends 'shared_layout/base.html' %}
+
+{% block title %}
+  Pistes
+{% endblock %}
+{% load static %} 
+{% block activeSettings %} {% include 'active_bar.html' %} {% endblock %}
+
+{% block contents %}
+<div class="row mb-3">
+    <form method="GET" style="{% if page %}margin: 20px 0px 0px 0px;{% else %}margin-top: 13%;{% endif %}">
+        {% csrf_token %}
+        <div class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-5 mb-2">
+                <div class="form" style="position: relative;">
+                    <i class="fa fa-search" style="position: absolute; top:12px; left: 17px; color: black;"></i>
+                    {{ filtredData.form.search }}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <a href="{% url 'create_piste' %}" class="btn btn-secondary" style="background-color: #0e2a5b; border-color: transparent; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);">Nouveau</a>
+            </div>
+        </div>
+    </form> 
+    {% if page %}
+    <section class="sectionList"> 
+        <div class="tableStyle">
+            <table class="table table-borderless">
+                <thead style="border-bottom: 2px solid black;">
+                    <tr class="text-black">
+                        <th class="d-none d-md-table-cell"></th>
+                        <th>Date de Création</th>
+                        <th>Objet</th>
+                        <th>Vendeur</th>
+                        <th>Nom du client</th>
+                        <th>Nom du contact</th>
+                        <th>Corriel</th>
+                        <th>Téléphone</th>
+                        <th>Etape</th>
+                        <th>Equipe commerciale</th>
+                        <th>Société</th>
+                        <th style="width: 6vh;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for piste in page %}
+                    <tr style="color: black;">
+                        <td class="d-none d-md-table-cell"></td>
+                        <td>{{ piste.created_at|date:"d/m/Y H:i" }}</td>
+                        <td>{{ piste.object }}</td>
+                        <td>{{ piste.seller }}</td>
+                        <td>{{ piste.client }}</td>
+                        <td>{{ piste.contact_name }}</td>
+                        <td>{{ piste.email }}</td>
+                        <td>{{ piste.phone }}</td>
+                        <td>{{ piste.state }}</td>
+                        <td>{{ piste.comm_team }}</td>
+                        <td>{{ piste.company }}</td>
+                        <td style="vertical-align: middle;">
+                            <button type="button" onclick="window.location='{% url 'edit_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}'" class="btn" style="padding: 2px;"><i class="fas fa-edit" style="color: black;"></i></button>
+                            <button type="button" onclick="confirmPisteDel('{{piste.id|escapejs}}', '{{piste.object|escapejs}}')" class="btn" style="color: black; padding: 2px;"><i class="far fa-trash-alt"></i></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if page.has_other_pages %}
+            {% include 'pagination.html' %}
+        {% endif %}    
+    </section>
+    {% else %}
+        {% include 'empty_list.html' %}
+    {% endif %}
+</div>
+
+<style>
+    @media only screen and (max-width: 820px) {
+        .tableStyle{
+            overflow-x: auto; 
+            width:  85vw;
+        }
+    }
+    @media only screen and (max-width: 767px) {
+        table td, table th {
+            white-space: nowrap;
+        }
+        .tableStyle{
+            overflow-x: auto; 
+            width:  75vw;
+        }
+    }
+</style>
+<script>
+    const confirmPisteDel = (pisteId, pisteDes) => {
+        swal({ 
+        title: `Confirmation de la suppression.`,   
+        text: `Etes-vous sûr que vous voulez supprimer ${pisteDes}?`,   
+        type: "warning",
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Oui",   
+        cancelButtonText: "Non",   
+        closeOnConfirm: true,   
+        closeOnCancel: true }, 
+        function(isConfirm){   
+            if (isConfirm){
+              window.location.href = "{% url 'delete_piste' 123456789 %}".replace(/123456789/, pisteId);
+            }});
+    }
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.contrib.admin import AdminSite
 from users.admin import *
 from users.models import OtpCode
-
+from piste.models import *
 
 class CustomAdminSite(AdminSite):
     site_header = 'Admin'
@@ -18,3 +18,4 @@ admin_site = CustomAdminSite()
 
 admin_site.register(CustomUser, CustomUserAdmin)
 admin_site.register(OtpCode)
+admin_site.register(Piste)

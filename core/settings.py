@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,8 +19,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'piste',
+    'bootstrap5',
+    'fontawesomefree',
+    'django_filters',
+    'widget_tweaks',
+    'django_extensions',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [
@@ -37,7 +44,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', os.path.join(BASE_DIR, 'piste', 'templates', 'piste'), os.path.join(BASE_DIR, 'users', 'templates', 'fragment'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -98,7 +105,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [

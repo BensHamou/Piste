@@ -4,8 +4,8 @@ __pycache__/
 # Django stuff:
 *.log
 local_settings.py
-users/migrations/*
-!users/migrations/__init__.py
+*/migrations/*
+!*/migrations/__init__.py
 
 # Environments
 .env

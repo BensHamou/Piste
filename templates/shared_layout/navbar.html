@@ -1,5 +1,6 @@
+{% load static %} 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-2">
-    <a class="navbar-brand" href="{%url 'users:home'%}">PISTE</a>
+    <a class="navbar-brand" href="{%url 'users:home'%}"><img src="{% static 'image/gsh.png' %}" style="margin-left: 10px;" width="45" height="45" alt="Image Title"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -8,6 +9,9 @@
         {%if user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link" href="{%url 'users:home'%}">Accueil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{%url 'pistes'%}">Pistes</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{%url 'users:logout'%}">Déconnecter</a>
