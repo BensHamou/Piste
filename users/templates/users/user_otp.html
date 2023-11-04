@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'shared_layout/base.html' %}
+
+{%block title%}
+Vérification de code
+{%endblock title%}
+
+{%block contents%}
+{%if error%}
+<div class="alert alert-danger" role="alert">
+    {{error}}
+</div>
+{%endif%}
+<div class="row">
+    <div class="col-12 text-center">
+        <h5 class="m-2">Vérification de code</h5>
+        <p class="text-muted">
+            Entrez le code qui vous a été envoyé.
+        </p>
+        <form method="post">
+            {%csrf_token%}
+            {%include 'users/form_snippets.html' with center=True form=form%}             
+            <input class="btn btn-primary" type="submit" value="Soumettre">
+        </form>    
+    </div>
+</div>
+{%endblock contents%}
