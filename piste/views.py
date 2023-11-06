@@ -21,7 +21,10 @@ models = client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
 @login_required(login_url='login')
 def listPisteList(request):
-    pistes = Piste.objects.all().order_by('id')
+    if request.user.is_admin:
+        pistes = Piste.objects.all().order_by('id')
+    else:
+        pistes = Piste.objects.filter(creator=request.user).order_by('id')
     filteredData = PisteFilter(request.GET, queryset=pistes)
     pistes = filteredData.qs
     paginator = Paginator(pistes, 7)
@@ -51,6 +54,7 @@ def createPisteView(request):
         if form.is_valid():
             piste = form.save(commit=False)
             piste.state = 'Brouillon'
+            piste.creator = request.user
             piste.save()
             cache_param = str(uuid.uuid4())
             url_path = reverse('pistes')
@@ -77,27 +81,51 @@ def editPisteView(request, id):
 
     return render(request, 'piste_form.html', context)
 
+@login_required(login_url='login')
+def pisteDetailsView(request, id):
+  piste = Piste.objects.get(id=id)
+  context = {
+    'piste_details': piste,
+  }
+  return render(request, 'piste_details.html', context)
+
 def live_search(request):
 
     search_for = request.GET.get('search_for', '')
     term = request.GET.get('search_term', '')
+    comm_team_id = request.GET.get('comm_team_id', '')
+
+    if search_for == 'seller' and comm_team_id != -1:
+        domain = [['name', 'ilike', term], '|', ['section_manager_ids', 'in', [comm_team_id]], ['section_user_ids', 'in', [comm_team_id]]]
+    elif search_for == 'client':
+        domain = [['name', 'ilike', term], '|', '|',['customer', '=', True], ['supplier', '=', True], ['is_company', '=', True]]
+    else:
+        domain = [['name', 'ilike', term]]
+
+    fields = ['id', 'name']
+    if search_for == 'address_city':
+        fields = ['id', 'name', 'localite_code']
 
     search_for_mapping = {
-        'address_willaya': 'res.country.state',
-        'address_city': 'res.localite',
-        'address_country': 'res.country',
-        'comm_team': 'crm.case.section',
-        'seller': 'res.users',
-        'company': 'res.company',
-        'canal': 'crm.tracking.medium',
-        'evenement': 'res.partner',
-        'client': 'res.partner'
+        'address_willaya': ['res.country.state', domain, fields],
+        'address_city': ['res.localite', domain, fields],
+        'address_country': ['res.country', domain, fields],
+        'comm_team': ['crm.case.section', domain, fields],
+        'seller': ['res.users', domain, fields],
+        'company': ['res.company', domain, fields],
+        'canal': ['crm.tracking.medium', domain, fields],
+        'evenement': ['res.partner', domain, fields],
+        'client': ['res.partner', domain, fields]
     }
 
-    model_name = search_for_mapping.get(search_for)
+    model = search_for_mapping.get(search_for)
 
-    if model_name:
-        results = models.execute_kw(db, uid, password, model_name, 'search_read', [[['name', 'ilike', term]]], {'fields': ['id', 'name'], 'limit': 25})
+    if model:
+        results = models.execute_kw(db, uid, password, model[0], 'search_read', [model[1]], {'fields': model[2], 'limit': 25})
+        #if search_for == 'address_city':
+        #    data = [{'id': obj['id'], 'name': obj['name'], 'localite_code': obj['localite_code']} for obj in results]
+        #else:
+        #    data = [{'id': obj['id'], 'name': obj['name'], 'localite_code': '/'} for obj in results]
         data = [{'id': obj['id'], 'name': obj['name']} for obj in results]
     else:
         data = []

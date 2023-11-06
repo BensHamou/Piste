@@ -1,0 +1,150 @@
+{% extends 'shared_layout/base.html' %}
+
+{% block title %}
+Piste - {{ piste_details.object }}
+{% endblock %}
+{% block contents %}
+
+<div class="d-flex justify-content-left mb-3">
+    <a href="{% url 'pistes' %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}" class="text-decoration-none text-dark d-flex align-items-center" style="color: rgba(222, 226, 230, 0.8); letter-spacing: 1.2px;">
+      <i class="fas fa-caret-left me-2"></i>
+      <p class="lead m-0 p-0">retour</p>
+    </a>
+</div>
+<div class="col-md-6 col-sm-6 mb-2">
+    <h4 class="text-dark mb-3">Piste - {{ piste_details.object }}</h4>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 col-sm-6 mb-2">
+      <div class="card card-body" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+        <div class="row mb-4">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="object">Objet</label>
+                <input type="text" id="object" class="form-control" value="{{ piste_details.object }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="company_name">Nom de la société</label>
+                <input type="text" id="company_name" class="form-control" value="{{ piste_details.company_name }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="client">Client</label>
+                <input type="text" id="client" class="form-control" value="{{ piste_details.client }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="address_street">Adresse</label>
+                <input type="text" id="address_street" class="form-control" value="{{ piste_details.address_street }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <input type="text" id="address_street2" class="form-control" value="{{ piste_details.address_street2 }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+              <input type="text" id="address_willaya" class="form-control" value="{{ piste_details.address_willaya }}" disabled/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6">
+      <div class="card card-body" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="contact_name">Nom du contact</label>
+                <input type="text" id="contact_name" class="form-control" value="{{ piste_details.contact_name }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="email">Courriel</label>
+                <input type="text" id="email" class="form-control" value="{{ piste_details.email }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="function">Fonction</label>
+                {{ form.function }}
+                <input type="text" id="function" class="form-control" value="{{ piste_details.function }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="phone">Téléphone</label>
+                {{ form.phone }}
+                <input type="text" id="phone" class="form-control" value="{{ piste_details.phone }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="mobile_phone">Téléphone mobile</label>
+                {{ form.mobile_phone }}
+                <input type="text" id="mobile_phone" class="form-control" value="{{ piste_details.mobile_phone }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="fax">Fax</label>
+                {{ form.fax }}
+                <input type="text" id="fax" class="form-control" value="{{ piste_details.fax }}" disabled/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="row mb-1">
+    <div class="col-md-12 col-sm-12 mb-2">
+      <div class="card card-body" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+        <div class="row mb-2">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="comm_team">Equipe commerciale</label>
+                <input type="text" id="comm_team" class="form-control" value="{{ piste_details.comm_team }}" disabled/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-12 col-sm-12">
+            <div class="form-outline">
+                <label class="form-label labelCustom" for="seller">Vendeur</label>
+                <input type="text" id="seller" class="form-control" value="{{ piste_details.seller }}" disabled/>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
     bio = models.TextField(_('Biographie'), max_length=500, blank=True)
     short_bio = models.TextField(_('Courte biographie'), max_length=250, blank=True)
     source = models.CharField(_('Source'), max_length=50, blank=True)
+    is_admin = models.BooleanField(default=False)
 
 
 class OtpCode(models.Model):
