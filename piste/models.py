@@ -10,6 +10,7 @@ class Piste(models.Model):
 
     object = models.CharField(max_length=255)
     company_name = models.CharField(max_length=255)
+    client_id = models.IntegerField()
     client = models.CharField(max_length=255)
 
     address_street = models.CharField(max_length=255)

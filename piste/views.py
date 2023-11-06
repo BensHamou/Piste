@@ -6,6 +6,18 @@ from .forms import *
 from .filters import *
 from django.core.paginator import Paginator
 from django.urls import reverse
+from django.http import JsonResponse
+from xmlrpc import client
+
+
+url = "http://10.23.10.101:8014"
+db = 'hasnaoui'
+username = "admin"
+password = "28lWcgk9Np3D"
+
+common = client.ServerProxy('{}/xmlrpc/2/common'.format(url))
+uid = common.authenticate(db, username, password, {})
+models = client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
 @login_required(login_url='login')
 def listPisteList(request):
@@ -37,7 +49,9 @@ def createPisteView(request):
     if request.method == 'POST':
         form = PisteForm(request.POST)
         if form.is_valid():
-            form.save()
+            piste = form.save(commit=False)
+            piste.state = 'Brouillon'
+            piste.save()
             cache_param = str(uuid.uuid4())
             url_path = reverse('pistes')
             redirect_url = f'{url_path}?cache={cache_param}'
@@ -63,3 +77,29 @@ def editPisteView(request, id):
 
     return render(request, 'piste_form.html', context)
 
+def live_search(request):
+
+    search_for = request.GET.get('search_for', '')
+    term = request.GET.get('search_term', '')
+
+    search_for_mapping = {
+        'address_willaya': 'res.country.state',
+        'address_city': 'res.localite',
+        'address_country': 'res.country',
+        'comm_team': 'crm.case.section',
+        'seller': 'res.users',
+        'company': 'res.company',
+        'canal': 'crm.tracking.medium',
+        'evenement': 'res.partner',
+        'client': 'res.partner'
+    }
+
+    model_name = search_for_mapping.get(search_for)
+
+    if model_name:
+        results = models.execute_kw(db, uid, password, model_name, 'search_read', [[['name', 'ilike', term]]], {'fields': ['id', 'name'], 'limit': 25})
+        data = [{'id': obj['id'], 'name': obj['name']} for obj in results]
+    else:
+        data = []
+
+    return JsonResponse(data, safe=False)
