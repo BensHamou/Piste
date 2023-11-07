@@ -10,7 +10,7 @@ def send_email(subject, message, to):
 
 def send_activation_code(to, code):
     subject = _('E-mail du code de vérification')
-    message = _(f'Votre code de vérification est{code}')
+    message = _(f'Votre code de vérification est {code}')
     send_email(subject, message, to)
 
 def send_reset_password_code(to, code):

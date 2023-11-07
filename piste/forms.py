@@ -34,11 +34,11 @@ class PisteForm(ModelForm):
         model = Piste
         #fields = ['object',  'company_name', 'client', 'client_id', 'address_street', 'address_street2', 'address_willaya_id', 'address_willaya', 'address_city_id', 'address_city', 'address_zip', 
         #          'address_country_id', 'address_country', 'contact_name', 'email', 'function', 'phone', 'mobile_phone', 'fax', 'seller_id', 'seller', 'comm_team_id', 
-        #          'comm_team', 'company_id', 'company', 'canal_id', 'canal', 'evenement_id', 'evenement']
+        #          'comm_team', 'company_id', 'company', 'canal_id', 'canal', 'evenement_id', 'evenement', 'note_intern']
         
         fields = ['object',  'company_name', 'client', 'client_id', 'address_street', 'address_street2', 'address_willaya_id', 'address_willaya', 
                   'contact_name', 'email', 'function', 'phone', 'mobile_phone', 'fax', 'seller_id', 'seller', 'comm_team_id', 
-                  'comm_team']
+                  'comm_team', 'note_intern']
 
     object = forms.CharField(widget=forms.TextInput(attrs=getAttrs('controlReq','Décrivez la piste..')))
     company_name = forms.CharField(widget=forms.TextInput(attrs=getAttrs('control','Nom de la société')), required=False)
@@ -73,5 +73,7 @@ class PisteForm(ModelForm):
     #canal_id = forms.IntegerField(widget=forms.HiddenInput(attrs=getAttrs('controlID','ID_canal_id')), required=False)
     #evenement_id = forms.IntegerField(widget=forms.HiddenInput(attrs=getAttrs('controlID','ID_evenement_id')), required=False)
     client_id = forms.IntegerField(widget=forms.HiddenInput(attrs=getAttrs('controlID','ID_client_id')), required=False)
+
+    note_intern = forms.CharField(widget=forms.Textarea(attrs= getAttrs('textarea','Notes internes..')), required=False)
 
 

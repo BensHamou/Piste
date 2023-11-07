@@ -9,5 +9,8 @@ urlpatterns = [
     path("pistes/create-piste/", views.createPisteView, name="create_piste"),
     path('pistes/detail-piste/<int:id>', views.pisteDetailsView, name='detail_piste'),
 
+    path('pistes/<int:pk>/confirm/', views.confirmPiste, name='confirm_piste'),
+    path('pistes/<int:pk>/cancel/', views.cancelPiste, name='cancel_piste'),
+
     path('live_search/', live_search, name='live_search'),
 ]

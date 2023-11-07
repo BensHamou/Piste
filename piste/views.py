@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 from django.http import JsonResponse
 from xmlrpc import client
+from django.contrib import messages
 
 
 url = "http://10.23.10.101:8014"
@@ -26,8 +27,10 @@ def listPisteList(request):
     else:
         pistes = Piste.objects.filter(creator=request.user).order_by('id')
     filteredData = PisteFilter(request.GET, queryset=pistes)
+    page_size_param = request.GET.get('page_size')
+    page_size = int(page_size_param) if page_size_param else 12  
     pistes = filteredData.qs
-    paginator = Paginator(pistes, 7)
+    paginator = Paginator(pistes, page_size)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {
@@ -88,6 +91,36 @@ def pisteDetailsView(request, id):
     'piste_details': piste,
   }
   return render(request, 'piste_details.html', context)
+
+@login_required(login_url='login')
+def cancelPiste(request, pk):
+    try:
+        piste = Piste.objects.get(id=pk)
+    except Piste.DoesNotExist:
+        messages.success(request, 'Piste Does not exit')
+        
+    piste.state = 'Annulé'
+    piste.save()
+    url_path = reverse('detail_piste', args=[piste.id])
+    cache_param = str(uuid.uuid4())
+    redirect_url = f'{url_path}?cache={cache_param}'
+    return redirect(redirect_url)
+
+
+@login_required(login_url='login')
+def confirmPiste(request, pk):
+    try:
+        piste = Piste.objects.get(id=pk)
+    except Piste.DoesNotExist:
+        messages.success(request, 'Piste Does not exit')
+    
+    piste.state = 'Confirmé'
+    piste.save()
+
+    url_path = reverse('detail_piste', args=[piste.id])
+    cache_param = str(uuid.uuid4())
+    redirect_url = f'{url_path}?cache={cache_param}'
+    return redirect(redirect_url)
 
 def live_search(request):
 

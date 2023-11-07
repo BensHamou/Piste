@@ -3,6 +3,7 @@
 {%block title%} 
 Registre 
 {%endblock title%} 
+{% load static %} 
 {%block contents%} 
 {%if error%}
 <div class="alert alert-danger" role="alert">
@@ -10,18 +11,33 @@ Registre
 </div>
 {%endif%}
 <form method="post">
-    {%csrf_token%} {%include 'users/form_snippets.html' with form=form%}
-    <input class="btn btn-primary" type="submit" value="Register">
+    {%csrf_token%} 
+    
+    <div class="d-flex justify-content-center align-items-center" style="height: 85vh;">
+      <div class="card" style="background: rgba(14, 42, 91, 0.15); backdrop-filter: blur(30px); border-radius: 1rem; border-color: transparent; width: 90%">
+        <div class="row mt-2">
+          <div class="col-md-6 col-sm-12 d-none d-md-block text-center">
+            <img src="{% static 'image/logo.png' %}" alt="login form" class="img-fluid" style="margin: 10% 0;" />
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center align-items-center" style="margin: auto">
+            <div class="card-body text-white">
+                {%include 'users/form_snippets.html' with form=form%}
+                <input class="btn btn-primary" type="submit" value="Register">
+                <div class="my-2">
+                  <small class="text-white">
+                      Mot de passe oublié ? <a class="ml-2" href="{%url 'users:forgot_password'%}">Restaurer</a>
+                  </small>
+                </div>
+                <div class="my-2">
+                    <small class="text-white">
+                        Pas de compte ? <a class="ml-2" href="{%url 'users:register'%}">S'inscrire</a>
+                    </small>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 </form>
-<div class="my-2">
-    <small class="text-muted">
-        Mot de passe oublié ? <a class="ml-2" href="{%url 'users:forgot_password'%}">Restaurer le mot de passe</a>
-    </small>
-</div>
-
-<div class="my-2">
-    <small class="text-muted">
-        Pas de compte ? <a class="ml-2" href="{%url 'users:register'%}">S'inscrire maintenant</a>
-    </small>
-</div>
 {%endblock contents%}

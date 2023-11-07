@@ -5,7 +5,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" style="width: 100%;">
         {%if user.is_authenticated%}
         <li class="nav-item">
             <a class="nav-link" href="{%url 'users:home'%}">Accueil</a>
@@ -13,7 +13,7 @@
         <li class="nav-item">
             <a class="nav-link" href="{%url 'pistes'%}">Pistes</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item ms-lg-auto">
             <a class="nav-link" href="{%url 'users:logout'%}">Déconnecter</a>
         </li>
         {%else%}
@@ -28,3 +28,9 @@
     </div>
   </nav>
   
+  <style>
+    .nav-item {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>

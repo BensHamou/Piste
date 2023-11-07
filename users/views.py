@@ -123,7 +123,7 @@ def check_otp_view(request):
         if form.is_valid():
             otp = OtpCode.objects.get(code=form.cleaned_data['otp'])
             user = otp.user
-            otp.delete()
+            otp.delete() 
             user.is_active = True
             user.save()
             return redirect('users:login')

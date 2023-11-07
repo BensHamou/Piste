@@ -48,6 +48,8 @@ class Piste(models.Model):
     canal = models.CharField(max_length=255, blank=True, null=True)
     evenement_id = models.IntegerField(blank=True, null=True)
     evenement = models.CharField(max_length=255, blank=True, null=True)
+
+    note_intern = models.TextField(null=True, blank=True)
     
     state = models.CharField(choices=STATE_PISTE, max_length=40, blank=True, null=True)
 

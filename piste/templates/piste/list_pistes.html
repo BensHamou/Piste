@@ -10,14 +10,21 @@
     <form method="GET" style="{% if page %}margin: 20px 0px 0px 0px;{% else %}margin-top: 13%;{% endif %}">
         {% csrf_token %}
         <div class="row height d-flex justify-content-center align-items-center">
-            <div class="col-md-5 mb-2">
+            <div class="col-lg-6 col-md-6 col-sm-6 mb-2">
                 <div class="form" style="position: relative;">
                     <i class="fa fa-search" style="position: absolute; top:12px; left: 17px; color: black;"></i>
                     {{ filtredData.form.search }}
                 </div>
             </div>
-            <div class="col-md-1">
-                <a href="{% url 'create_piste' %}" class="btn btn-secondary" style="background-color: #0e2a5b; border-color: transparent; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);">Nouveau</a>
+            <div class="col-lg-2 col-md-2 col-sm-6 mb-2">
+                <input type="number" class="form-control" value="{% if request.GET.page_size %}{{ request.GET.page_size }}{% else %}12{% endif %}" style="background-color: rgba(202, 207, 215, 0.5); 
+                border-color: transparent; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2); color: #f2f2f2; height: 40px;" name="page_size">
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 mb-2">
+                <button type="submit" class="btn btn-block" style="background-color: rgba(111, 142, 153, 0.7); border-color: transparent; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);">Appliquer</button>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6 mb-2">
+                <a href="{% url 'create_piste' %}" class="btn" style="background-color: rgba(111, 142, 153, 0.7); border-color: transparent; box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);">Nouveau</a>
             </div>
         </div>
     </form> 
@@ -25,10 +32,11 @@
     <section class="sectionList"> 
         <div class="tableStyle">
             <table class="table table-borderless">
-                <thead style="border-bottom: 2px solid black;">
-                    <tr class="text-black">
+                <thead style="border-bottom: 2px solid #42464b;">
+                    <tr style="color: #42464b;">
                         <th class="d-none d-md-table-cell"></th>
-                        <th>Date de Création</th>
+                        <th class="d-none d-lg-table-cell">Date de Création</th>
+                        <th class="d-none d-lg-table-cell">Créé par</th>
                         <th>Objet</th>
                         <th>Vendeur</th>
                         <th>Nom du contact</th>
@@ -40,9 +48,10 @@
                 </thead>
                 <tbody>
                     {% for piste in page %}
-                    <tr style="color: black;">
+                    <tr style="color: #42464b;">
                         <td class="d-none d-md-table-cell"></td>
-                        <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.created_at|date:"d/m/Y H:i" }}</td>
+                        <td class="d-none d-lg-table-cell" onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.created_at|date:"d/m/Y H:i" }}</td>
+                        <td class="d-none d-lg-table-cell" onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.creator }}</td>
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.object }}</td>
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.seller }}</td>
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.contact_name }}</td>
@@ -50,8 +59,8 @@
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.comm_team }}</td>
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.state }}</td>
                         <td style="vertical-align: middle;">
-                            <button type="button" onclick="window.location='{% url 'edit_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}'" class="btn" style="padding: 2px;"><i class="fas fa-edit" style="color: black;"></i></button>
-                            <button type="button" onclick="confirmPisteDel('{{piste.id|escapejs}}', '{{piste.object|escapejs}}')" class="btn" style="color: black; padding: 2px;"><i class="far fa-trash-alt"></i></button>
+                            <button type="button" onclick="window.location='{% url 'edit_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}'" class="btn" style="padding: 2px;"><i class="fas fa-edit" style="color: #42464b;"></i></button>
+                            <button type="button" onclick="confirmPisteDel('{{piste.id|escapejs}}', '{{piste.object|escapejs}}')" class="btn" style="color: #42464b; padding: 2px;"><i class="far fa-trash-alt"></i></button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -68,19 +77,31 @@
 </div>
 
 <style>
-    @media only screen and (max-width: 820px) {
+    .sectionList{
+        margin-top: 35px;
+        background: rgba(147, 164, 186, 0.2);
+        border-radius: 5px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    @media only screen and (max-width: 950px) {
         .tableStyle{
             overflow-x: auto; 
-            width:  85vw;
+            width:  100%;
         }
     }
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 860px) {
+        .tableStyle{
+            overflow-x: auto; 
+            width:  100%;
+        }
+    }
+    @media only screen and (max-width: 780px) {
         table td, table th {
             white-space: nowrap;
         }
         .tableStyle{
             overflow-x: auto; 
-            width:  75vw;
+            width:  100%;
         }
     }
 </style>
