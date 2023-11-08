@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     container_name: PISTE_APP
     ports:
-      - "8003:8000"
+      - "8003:8003"
     volumes:
       - ./piste:/piste
 

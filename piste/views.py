@@ -11,7 +11,7 @@ from xmlrpc import client
 from django.contrib import messages
 
 
-url = "http://10.23.10.101:8014"
+url = "http://10.20.10.43:8069"
 db = 'hasnaoui'
 username = "admin"
 password = "28lWcgk9Np3D"
