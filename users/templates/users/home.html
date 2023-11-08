@@ -5,33 +5,33 @@ Accueil
 {% endblock %}
 
 {%block contents%}
-    <div class="col-md-12 col-sm-6 d-flex justify-content-center align-items-center mb-3">
-        <div class="card card-body" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 d-flex justify-content-center align-items-center">
-                    <h1 class="text-center">Bonjour, {{ user.first_name }} {{ user.last_name }}</h1>
-                </div>
+<div class="col-md-12 col-sm-12 d-flex justify-content-center align-items-center mb-3">
+    <div class="card card-body" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 d-flex justify-content-center align-items-center">
+                <h1 class="text-center">Bonjour, {{ user.first_name }} {{ user.last_name }}</h1>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-6 d-flex justify-content-center align-items-center">
-            <div class="card card-body" onclick="window.location='{% url 'create_piste' %}'" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
-                <img class="card-img-top" src="{% static 'image/create_piste.png' %}" alt="Card image cap" style="border-radius: 5px;">
-                <div class="card-footer bg-transparent d-flex justify-content-center">
-                    <h4 class="card-title p-0 m-0">Créer une nouvelle piste</h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-6 d-flex justify-content-center align-items-center">
-            <div class="card card-body" onclick="window.location='{% url 'pistes' %}'" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
-                <img class="card-img-top" src="{% static 'image/list_piste.png' %}" alt="Card image cap" style="border-radius: 5px;">
-                <div class="card-footer bg-transparent d-flex justify-content-center">
-                    <h4 class="card-title p-0 m-0">Voir la liste des pistes</h4>
-                </div>
+</div>
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-md-5 col-lg-5 col-sm-5 d-flex justify-content-center align-items-center">
+        <div class="card card-body" onclick="window.location='{% url 'create_piste' %}'" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+            <img class="img-fluid" src="{% static 'image/create_piste.png' %}" alt="Card image cap" style="border-radius: 5px; height">
+            <div class="card-footer bg-transparent d-flex justify-content-center">
+                <h4 class="card-title p-0 m-0">Créer une nouvelle piste</h4>
             </div>
         </div>
     </div>
+    <div class="col-md-5 col-lg-5 col-sm-5 d-flex justify-content-center align-items-center">
+        <div class="card card-body" onclick="window.location='{% url 'pistes' %}'" style="background: rgba(243, 243, 243, 0.3); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);  border: 1px solid rgba(159, 97, 163, 0);">
+            <img class="img-fluid" src="{% static 'image/list_piste.png' %}" alt="Card image cap" style="border-radius: 5px; height">
+            <div class="card-footer bg-transparent d-flex justify-content-center">
+                <h4 class="card-title p-0 m-0">Voir la liste des pistes</h4>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     .card{
         cursor: pointer;
