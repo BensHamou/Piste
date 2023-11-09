@@ -9,9 +9,18 @@ from django.urls import reverse
 from django.http import JsonResponse
 from xmlrpc import client
 from django.contrib import messages
+from .cron import sync_with_odoo
 
+def admin_only_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_admin:
+            return view_func(request, *args, **kwargs)
+        else:
+            return render(request, '403.html', status=403)
+    return wrapper
 
 url = "http://10.20.10.43:8069"
+#url = "http://10.23.10.101:8014"
 db = 'hasnaoui'
 username = "admin"
 password = "28lWcgk9Np3D"
@@ -20,10 +29,10 @@ common = client.ServerProxy('{}/xmlrpc/2/common'.format(url))
 uid = common.authenticate(db, username, password, {})
 models = client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def listPisteList(request):
     if request.user.is_admin:
-        pistes = Piste.objects.all().order_by('id')
+        pistes = Piste.objects.all().order_by('-created_at')
     else:
         pistes = Piste.objects.filter(creator=request.user).order_by('id')
     filteredData = PisteFilter(request.GET, queryset=pistes)
@@ -38,7 +47,7 @@ def listPisteList(request):
     }
     return render(request, 'list_pistes.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def deletePisteView(request, id):
     piste = Piste.objects.get(id=id)
     piste.delete()
@@ -49,7 +58,7 @@ def deletePisteView(request, id):
 
     return redirect(redirect_url)
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def createPisteView(request):
     form = PisteForm()
     if request.method == 'POST':
@@ -66,7 +75,7 @@ def createPisteView(request):
     context = {'form': form }
     return render(request, 'piste_form.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def editPisteView(request, id):
     piste = Piste.objects.get(id=id)
 
@@ -84,7 +93,7 @@ def editPisteView(request, id):
 
     return render(request, 'piste_form.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def pisteDetailsView(request, id):
   piste = Piste.objects.get(id=id)
   context = {
@@ -92,7 +101,7 @@ def pisteDetailsView(request, id):
   }
   return render(request, 'piste_details.html', context)
 
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def cancelPiste(request, pk):
     try:
         piste = Piste.objects.get(id=pk)
@@ -106,8 +115,7 @@ def cancelPiste(request, pk):
     redirect_url = f'{url_path}?cache={cache_param}'
     return redirect(redirect_url)
 
-
-@login_required(login_url='login')
+@login_required(login_url='users:login')
 def confirmPiste(request, pk):
     try:
         piste = Piste.objects.get(id=pk)
@@ -122,6 +130,7 @@ def confirmPiste(request, pk):
     redirect_url = f'{url_path}?cache={cache_param}'
     return redirect(redirect_url)
 
+@login_required(login_url='users:login')
 def live_search(request):
 
     search_for = request.GET.get('search_for', '')
@@ -164,3 +173,12 @@ def live_search(request):
         data = []
 
     return JsonResponse(data, safe=False)
+
+@login_required(login_url='users:login')
+@admin_only_required
+def syn_with_odoo(request):
+    
+    sync_with_odoo()
+    messages.success(request, "Synchronisation réussie!")
+
+    return redirect('users:home')

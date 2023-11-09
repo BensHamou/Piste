@@ -13,4 +13,5 @@ urlpatterns = [
     path('pistes/<int:pk>/cancel/', views.cancelPiste, name='cancel_piste'),
 
     path('live_search/', live_search, name='live_search'),
+    path('sync/', syn_with_odoo, name='sync_data'),
 ]

@@ -13,6 +13,14 @@
         <li class="nav-item">
             <a class="nav-link" href="{%url 'pistes'%}">Pistes</a>
         </li>
+        {%if user.is_admin%}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown">Settings</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="background: rgba(147, 164, 186, 0.98); border-radius: 5px;  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);">
+                <a class="dropdown-item" href="{%url 'sync_data'%}">Synchroniser</a>
+            </div>
+          </li>
+        {%endif%}
         <li class="nav-item ms-lg-auto">
             <a class="nav-link" href="{%url 'users:logout'%}">Déconnecter</a>
         </li>

@@ -1,6 +1,13 @@
 from django.db import models
 from users.models import CustomUser
 
+class Setting(models.Model):
+    name = models.CharField(max_length=50)
+    value = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.name + ' : ' + self.value
+
 class Piste(models.Model):
         
     STATE_PISTE = [
@@ -52,6 +59,8 @@ class Piste(models.Model):
     note_intern = models.TextField(null=True, blank=True)
     
     state = models.CharField(choices=STATE_PISTE, max_length=40, blank=True, null=True)
+
+    odoo_id = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.object

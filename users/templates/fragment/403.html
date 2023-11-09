@@ -11,15 +11,20 @@
     <link rel="icon" type="image/ico" href="{% static 'image/favicon.ico' %}">
 </head>
 <style>
+  body{
+    background: rgb(35,56,141);
+    background: linear-gradient(194deg, rgba(35,56,141,0.7175245098039216) 4%, rgba(83,175,49,0.6783088235294117) 97%);
+    backdrop-filter: blur(8.8px); min-height: 100vh;
+  }
   .error{
-    background: rgba(31, 57, 101, 0.6); 
+    background: rgba(31, 57, 101, 0.4); 
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);  
     height: 100%; 
     backdrop-filter: blur(3.7px); 
     -webkit-backdrop-filter: blur(3.7px);
   }
   .error_div{
-    background: rgba(31, 57, 101, 0.95); 
+    background: rgba(31, 57, 101, 0.4); 
     color: white; 
     border-radius: 5px;
     padding: 75px;
@@ -35,7 +40,7 @@
         Désolé, Vous n'avez pas l'autorisation d'accéder à cette page.
       </p>
       <p class="display-6 mb-5">Veuillez contacter l'administrateur</p>
-      <p class="text-muted lead">(Erreur 403)</p>
+      <p class="text-error lead">(Erreur 403)</p>
     </div>
   </div>
 </body>

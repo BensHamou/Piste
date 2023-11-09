@@ -30,6 +30,10 @@ INSTALLED_APPS = [
     'django_crontab'
 ]
 
+CRONJOBS = [
+    ('0 0 * * *', 'piste.cron.sync_with_odoo')
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

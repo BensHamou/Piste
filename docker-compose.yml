@@ -37,6 +37,24 @@ services:
       - DB_USER=puma_prod
       - DB_PASS=puma_prod
       - DB_PORT=5432
+  cron:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    image: piste_cron
+    container_name: PISTE_CRON
+    depends_on:
+    - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=PisteDB
+      - DB_USER=puma_prod
+      - DB_PASS=puma_prod
+      - DB_PORT=5432
+    command: >
+      sh -c " python manage.py crontab add &&
+              crond -f"
 volumes:
   db_data:
 networks:
