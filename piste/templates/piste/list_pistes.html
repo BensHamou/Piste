@@ -59,7 +59,7 @@
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.comm_team }}</td>
                         <td onclick="window.location='{% url 'detail_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% else %}?page=1{% endif %}{% if request.GET.page_size %}&page_size={{ request.GET.page_size }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}'" style="cursor: pointer;">{{ piste.state }}</td>
                         <td style="vertical-align: middle;">
-                            <button type="button" onclick="window.location='{% url 'edit_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}'" class="btn" style="padding: 2px;"><i class="fas fa-edit" style="color: #42464b;"></i></button>
+                            <button type="button" {% if piste.state != 'Brouillon' %} disabled {% endif %} onclick="window.location='{% url 'edit_piste' piste.id %}{% if request.GET.page %}?page={{ request.GET.page }}{% endif %}'" class="btn" style="padding: 2px;"><i class="fas fa-edit" style="color: #42464b;"></i></button>
                             <button type="button" {% if piste.state != 'Brouillon' %} disabled {% endif %} onclick="confirmPisteDel('{{piste.id|escapejs}}', '{{piste.object|escapejs}}')" class="btn" style="color: #42464b; padding: 2px;"><i class="far fa-trash-alt"></i></button>
                         </td>
                     </tr>
