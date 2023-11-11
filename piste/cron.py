@@ -1,30 +1,19 @@
-from xmlrpc import client
-from .models import Piste
+from .models import Piste, Setting
 from django.core.mail import send_mail
 from django.utils.html import format_html
 from datetime import datetime
-
-url = "http://10.20.10.43:8069"
-#url = "http://10.23.10.101:8014"
-db = 'hasnaoui'
-username = "admin"
-password = "28lWcgk9Np3D"
-
-common = client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-uid = common.authenticate(db, username, password, {})
-models = client.ServerProxy('{}/xmlrpc/2/object'.format(url))
+from .utils import connect_odoo
 
 def sync_with_odoo():
-    # get all pistes that state = confirmed and odoo_id is null
     defaults = {
         'country_id': 63,
         'medium_id': 6,
         'stage_id': 1,
     }
-    # get pistes that state = confirmed AND odoo_id is not defined
 
     pistes = Piste.objects.filter(state='Confirmé', odoo_id=None)
     created_pistes = []
+    db, uid, models, password = connect_odoo()
     for piste in pistes:
         data = {
             'name': piste.object if piste.object else None,
@@ -50,30 +39,35 @@ def sync_with_odoo():
             'stage_id': defaults['stage_id']
         }
         data = {key: value for key, value in data.items() if value is not None}
-
-        piste_id = models.execute_kw(db, uid, password, "crm.lead", "create", [data])
-
-        piste.odoo_id = piste_id
-
-        piste.save()
-
-        created_pistes.append({'id': piste.pk, 'odoo_id': piste.odoo_id})
+        try:
+            piste_id = models.execute_kw(db, uid, password, "crm.lead", "create", [data])
+            piste.odoo_id = piste_id
+            piste.save()
+            created_pistes.append({'id': piste.pk, 'odoo_id': piste.odoo_id})
+        except Exception as e:
+            print(e)
+            continue
 
     recipient_list = ['benshamou@gmail.com']
 
     if len(created_pistes) > 0 :
-        subject = 'Notification de synchronisation ' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        address = 'http://127.0.0.1:8000/pistes/detail-piste/'
-        message = '''<p>Salam,<br> 
-Au total, '''+str(len(created_pistes))+''' pistes ont été synchronisées avec succès avec Odoo:'''
-        for cp in created_pistes:
-            #addressOdoo = 'http://10.23.10.101:8014/web#id=XXXX&view_type=form&model=crm.lead&menu_id=477&action=565'
-            addressOdoo = 'http://10.20.10.43:8069/web#id=XXXX&view_type=form&model=crm.lead&menu_id=477&action=565'
-            message += '''<br> - Platform: '''+address + str(cp['id'])+''' => Odoo: '''+addressOdoo.replace('XXXX', str(cp['odoo_id']))
+        subject = 'Notification de synchronisation (' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + ')'
+        address = Setting.objects.get(name='piste_detail').value
+        addressOdoo = Setting.objects.get(name='odoo_piste_url').value
         
-        message += '''<br> Toutes ces pistes ont été créées en tant que 'Nouveau', pensez à les consulter afin de compléter d'éventuelles informations manquantes.
-        <br> 
-        Cordiallement'''
+        message = '''
+        <p>Bonjour l'équipe,</p>
+        
+        <p>Au total, <b>'''+str(len(created_pistes))+''' pistes</b> ont été synchronisées avec succès avec Odoo:
+        '''
+        for cp in created_pistes:
+            message += '''
+            <br>    - <a href="'''+address + str(cp['id'])+'''">Platform</a> => <a href="'''+addressOdoo.replace('XXXX', str(cp['odoo_id']))+'''">Odoo</a>'''
+        
+        message += '''
+        <br><br> Toutes ces pistes ont été créées en tant que 'Nouveau', pensez à les consulter afin de compléter d'éventuelles informations manquantes.
+        <br> <br> 
+        Cordiallement,</p>'''
 
 
         formatHtml = format_html(message)

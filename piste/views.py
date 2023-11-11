@@ -7,9 +7,12 @@ from .filters import *
 from django.core.paginator import Paginator
 from django.urls import reverse
 from django.http import JsonResponse
-from xmlrpc import client
 from django.contrib import messages
 from .cron import sync_with_odoo
+from .utils import connect_odoo
+
+
+db, uid, models, password = connect_odoo()
 
 def admin_only_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -18,16 +21,6 @@ def admin_only_required(view_func):
         else:
             return render(request, '403.html', status=403)
     return wrapper
-
-url = "http://10.20.10.43:8069"
-#url = "http://10.23.10.101:8014"
-db = 'hasnaoui'
-username = "admin"
-password = "28lWcgk9Np3D"
-
-common = client.ServerProxy('{}/xmlrpc/2/common'.format(url))
-uid = common.authenticate(db, username, password, {})
-models = client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
 @login_required(login_url='users:login')
 def listPisteList(request):
