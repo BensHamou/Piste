@@ -48,7 +48,7 @@ def sync_with_odoo():
             print(e)
             continue
 
-    recipient_list = ['benshamou@gmail.com']
+    recipient_list = Setting.objects.filter(name='send_to').values_list('value', flat=True)
 
     if len(created_pistes) > 0 :
         subject = 'Notification de synchronisation (' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + ')'
