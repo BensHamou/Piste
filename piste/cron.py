@@ -23,7 +23,7 @@ def sync_with_odoo():
             'street': piste.address_street if piste.address_street else None,
             'street2': piste.address_street2 if piste.address_street2 else None,
             'city': piste.address_city_id if piste.address_city else None,
-            'state': piste.address_willaya_id if piste.address_willaya else None,
+            'state_id': piste.address_willaya_id if piste.address_willaya else None,
             'zip': piste.address_zip if piste.address_zip else None,
             'country_id': piste.address_country_id if piste.address_country else defaults['country_id'],
             'email_from': piste.email if piste.email else None,
