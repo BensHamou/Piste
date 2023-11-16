@@ -21,18 +21,25 @@
 background: linear-gradient(194deg, rgba(35,56,141,0.7175245098039216) 4%, rgba(83,175,49,0.6783088235294117) 97%);
 backdrop-filter: blur(8.8px); min-height: 100vh;">
     {%include 'shared_layout/navbar.html'%}
-    <div class="container my-3">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{%if message.tags == 'error'%}danger {%else%}{{message.tags}} {%endif%} my-2" role="alert">
-            {{message}}
+    
+    {% if request.path == "/dashboard/" %}
+        <div style="position: sticky; height: 100vh;">
+        {% block dashboard %} {% endblock %}
         </div>
-        {% endfor %}
-        {% endif %}
+    {% else %}
+        <div class="container my-3">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{%if message.tags == 'error'%}danger {%else%}{{message.tags}} {%endif%} my-2" role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+            {% endif %}
 
-        {%block contents%}
-        {%endblock contents%}
-    </div>
+            {%block contents%}
+            {%endblock contents%}
+        </div>
+    {% endif %}
     <style>
         .labelCustom{
             color: #42464b; 

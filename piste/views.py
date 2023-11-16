@@ -175,3 +175,9 @@ def syn_with_odoo(request):
     messages.success(request, "Synchronisation réussie!")
 
     return redirect('users:home')
+
+@login_required(login_url='users:login')
+@admin_only_required
+def dashboard(request):
+
+    return render(request, 'dashboard.html')

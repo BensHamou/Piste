@@ -14,4 +14,5 @@ urlpatterns = [
 
     path('live_search/', live_search, name='live_search'),
     path('sync/', syn_with_odoo, name='sync_data'),
+    path('dashboard/', dashboard, name='dashboard'),
 ]
