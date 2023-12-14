@@ -27,10 +27,43 @@ from .utils import (
     send_reset_password_code,
 )
 from .decorators import only_authenticated_user, redirect_authenticated_user
+import requests
+import json
+import uuid
+from django.urls import reverse
 
 @only_authenticated_user
 def home_view(request):
     return render(request, 'users/home.html')
+
+@login_required(login_url='login')
+def refreshUsersList(request):
+    
+    usernames = CustomUser.objects.values_list('username', flat=True)
+    
+    API_Users = 'https://api.ldap.groupe-hasnaoui.com/get/users?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJUb2tlbiI6IkZvciBEU0kiLCJVc2VybmFtZSI6ImFjaG91cl9hciJ9.aMy1LUzKa6StDvQUX54pIvmjRwu85Fd88o-ldQhyWnE'
+    GROUP_Users = 'https://api.ldap.groupe-hasnaoui.com/get/users/group/GSH-PST?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJUb2tlbiI6IkZvciBEU0kiLCJVc2VybmFtZSI6ImFjaG91cl9hciJ9.aMy1LUzKa6StDvQUX54pIvmjRwu85Fd88o-ldQhyWnE'
+
+    response = requests.get(API_Users)
+    response_ = requests.get(GROUP_Users)
+
+    if response.status_code == 200 and response_.status_code == 200:
+        data = json.loads(response.content)
+        group_users = json.loads(response_.content)['members']
+
+        new_users_list = [user for user in data['users'] if user['fullname'] in group_users and user['AD2000'] not in usernames]
+
+        for user in new_users_list:
+            user = CustomUser(username= user['AD2000'], password='password', is_admin=False, first_name= user['fname'], email= user['mail'].lower(), last_name = user['lname'])
+            user.save()
+    else:
+        print('Error: could not fetch data from API')
+
+    cache_param = str(uuid.uuid4())
+    url_path = reverse('users:home')
+    redirect_url = f'{url_path}?cache={cache_param}'
+
+    return redirect(redirect_url)
 
 
 @redirect_authenticated_user

@@ -6,7 +6,6 @@ from .utils import connect_odoo
 
 def sync_with_odoo():
 
-    print('HERE ******************* ')
     defaults = {
         'country_id': 63,
         'medium_id': 6,
