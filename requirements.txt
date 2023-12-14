@@ -10,6 +10,7 @@ django-filter==23.2
 django-fontawesome-5==1.0.18
 django-widget-tweaks==1.4.12
 fontawesomefree==6.4.0
+requests==2.29.0
 Pillow==10.1.0
 psycopg2-binary==2.9.5
 pypi-xmlrpc==2020.12.3
