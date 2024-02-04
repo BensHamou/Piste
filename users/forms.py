@@ -9,25 +9,8 @@ from users.models import OtpCode
 
 
 class CustomLoginForm(forms.Form):
-    username_or_email = forms.CharField(max_length=256, widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': 'Email'}))
-    password = forms.CharField(widget=forms.PasswordInput(
-        attrs={'class': 'form-control', 'placeholder': 'Mot de passe'}))
-
-    def clean_username_or_email(self):
-        username_or_email = self.cleaned_data['username_or_email']
-        if "@" in username_or_email:
-            validate_email(username_or_email)
-            data = {'email': username_or_email.lower()}
-        else:
-            data = {'username': username_or_email.lower()}
-        try:
-            get_user_model().objects.get(**data)
-        except get_user_model().DoesNotExist:
-            raise ValidationError(
-                _('Ce {} n\'existe pas'.format(list(data.keys())[0])))
-        else:
-            return username_or_email
+    username_or_email = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Mot de passe'}))
 
 
 class RegisterForm(UserCreationForm):

@@ -82,8 +82,6 @@ def login_view(request):
                 else:
                     login(request, user)
                     return redirect('users:home')
-            else:
-                error = 'Les informations d\'identification invalides'
     else:
         form = CustomLoginForm()
     return render(request, 'users/login.html', {'form': form, 'error': error})
