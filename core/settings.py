@@ -75,7 +75,7 @@ DATABASES = {
     #    'NAME': 'PisteDB',
     #    'USER': 'puma_prod',
     #    'PASSWORD': 'puma_prod',
-    #    'HOST': '10.10.10.101',
+    #    'HOST': '10.10.10.53',
     #    'PORT': '5434',
     #}
     'default': {
