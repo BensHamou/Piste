@@ -75,8 +75,8 @@ DATABASES = {
     #    'NAME': 'PisteDB',
     #    'USER': 'puma_prod',
     #    'PASSWORD': 'puma_prod',
-    #    'HOST': '10.10.10.53',
-    #    'PORT': '5434',
+    #    'HOST': '10.10.10.20',
+    #    'PORT': '5166',
     #}
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
